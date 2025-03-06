@@ -1,0 +1,130 @@
+/* General Styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+
+/* Content Container */
+
+.content {
+    text-align: center;
+    padding: 20px;
+    position: relative;
+}
+
+
+/* Centered Title */
+
+h1 {
+    margin-top: 40px;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+
+/* Link Input Form */
+
+form {
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+input[type="url"],
+textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+
+/* Media Display */
+
+#mediaDisplay {
+    margin: 20px auto;
+}
+
+
+/* Comment Section */
+
+.comment-section {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff;
+    display: inline-block;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Sidebar Styles */
+
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 1;
+}
+
+.sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.sidebar a:hover {
+    color: #f1f1f1;
+}
+
+.sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+.sidebar.active {
+    width: 250px;
+}
+
+
+/* Hamburger Menu Icon */
+
+.hamburger {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 2;
+}

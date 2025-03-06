@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sentiment Analysis of Social Media</title>
+    <!-- Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <!-- Sidebar with social media icons -->
+    <div class="sidebar" id="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
+        <a href="https://www.youtube.com" target="_blank"><i class="fa fa-youtube-play"></i></a>
+        <a href="https://www.instagram.com" target="_blank"><i class="fa fa-instagram"></i></a>
+        <a href="https://www.twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="content">
+        <!-- Hamburger Menu Icon -->
+        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
+        <!-- Centered Title -->
+        <h1>Sentiment Analysis of Social Media</h1>
+
+        <!-- Link Input Form -->
+        <form id="linkForm" onsubmit="processMedia(event)">
+            <input type="url" id="mediaLink" name="mediaLink" placeholder="Paste YouTube, Instagram, or Twitter link here" required />
+            <button type="submit">Submit Link</button>
+        </form>
+
+        <!-- Media Display Area -->
+        <div id="mediaDisplay"></div>
+
+        <!-- Comment Box Section -->
+        <div class="comment-section">
+            <h2>Leave a Comment</h2>
+            <form id="commentForm" onsubmit="processComment(event)">
+                <textarea id="commentText" name="commentText" rows="4" placeholder="Enter your comment here" required></textarea>
+                <button type="submit">Submit Comment</button>
+            </form>
+            <div id="commentResult"></div>
+        </div>
+    </div>
+
+    <!-- Inline JavaScript -->
+    <script>
+        // Toggle sidebar visibility
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("active");
+        }
+
+        // Process the media link submission
+        function processMedia(event) {
+            event.preventDefault();
+            const mediaLink = document.getElementById("mediaLink").value;
+            const mediaDisplay = document.getElementById("mediaDisplay");
+            mediaDisplay.innerHTML = "";
+
+            if (mediaLink.includes("youtube.com") || mediaLink.includes("youtu.be")) {
+                // Extract YouTube video ID from URL
+                let videoId = "";
+                if (mediaLink.includes("youtu.be/")) {
+                    videoId = mediaLink.split("youtu.be/")[1];
+                } else if (mediaLink.includes("v=")) {
+                    videoId = mediaLink.split("v=")[1];
+                    const ampersandPosition = videoId.indexOf("&");
+                    if (ampersandPosition !== -1) {
+                        videoId = videoId.substring(0, ampersandPosition);
+                    }
+                }
+                mediaDisplay.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+            } else if (mediaLink.includes("instagram.com")) {
+                mediaDisplay.innerHTML = `<blockquote class="instagram-media" data-instgrm-permalink="${mediaLink}" data-instgrm-version="12"></blockquote>`;
+                const script = document.createElement("script");
+                script.src = "https://www.instagram.com/embed.js";
+                document.body.appendChild(script);
+            } else if (mediaLink.includes("twitter.com")) {
+                mediaDisplay.innerHTML = `<blockquote class="twitter-tweet"><a href="${mediaLink}"></a></blockquote>`;
+                const script = document.createElement("script");
+                script.src = "https://platform.twitter.com/widgets.js";
+                document.body.appendChild(script);
+            } else {
+                mediaDisplay.innerHTML = "<p>Unsupported media link. Please provide a valid YouTube, Instagram, or Twitter link.</p>";
+            }
+        }
+
+        // Process the comment submission with a basic sentiment analysis
+        function processComment(event) {
+            event.preventDefault();
+            const comment = document.getElementById("commentText").value.toLowerCase();
+            const resultDiv = document.getElementById("commentResult");
+            resultDiv.innerHTML = "";
+
+            // Basic keyword-based sentiment analysis
+            const positiveWords = ["good", "great", "awesome", "fantastic", "excellent"];
+            const negativeWords = ["bad", "terrible", "worst", "awful", "poor"];
+
+            let sentiment = "Neutral";
+            let isPositive = positiveWords.some(word => comment.includes(word));
+            let isNegative = negativeWords.some(word => comment.includes(word));
+
+            if (isPositive && !isNegative) {
+                sentiment = "Positive";
+            } else if (isNegative && !isPositive) {
+                sentiment = "Negative";
+            }
+
+            // Display results according to sentiment
+            if (sentiment === "Positive") {
+                resultDiv.innerHTML = `<p><strong>Positive Comment:</strong> ${comment}</p>`;
+            } else if (sentiment === "Negative") {
+                resultDiv.innerHTML = `<p><strong>Negative Comment:</strong> Please consider changing your comment.</p>`;
+            } else {
+                resultDiv.innerHTML = `<p><strong>Neutral Comment:</strong> ${comment}</p>`;
+            }
+        }
+    </script>
+</body>
+
+</html>
