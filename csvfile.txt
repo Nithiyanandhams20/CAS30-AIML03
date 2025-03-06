@@ -1,0 +1,9 @@
+def save_to_csv(comments, filename="youtube_comments.csv"):
+    df = pd.DataFrame(comments)
+    df.to_csv(filename, index=False, encoding="utf-8")
+    print(f"Comments saved to {filename}")
+
+video_id = "YOUR_VIDEO_ID"
+comments = get_video_comments(video_id)
+
+save_to_csv(comments)
