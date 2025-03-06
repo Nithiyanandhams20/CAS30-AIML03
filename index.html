@@ -1,124 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sentiment Analysis of Social Media</title>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+
+
 </head>
-
 <body>
-   
-    <div class="sidebar" id="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
-        <a href="https://www.youtube.com" target="_blank"><i class="fa fa-youtube-play"></i></a>
-        <a href="https://www.instagram.com" target="_blank"><i class="fa fa-instagram"></i></a>
-        <a href="https://www.twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+    <h2>🔥 Sentiment Analysis Dashboard 🔥</h2>
+
+    
+    <input type="text" id="urlInput" placeholder="📌 Paste UML/YouTube link here...">
+    <button onclick="fetchVideoData()">🚀 Submit</button>
+
+    
+    <div id="videoContainer">
+        <h3 id="videoTitle"></h3>
+        <iframe id="videoEmbed"></iframe>
     </div>
 
-   
-    <div class="content">
-        
-        <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
-        
-        <h1>Sentiment Analysis of Social Media</h1>
-
-      
-        <form id="linkForm" onsubmit="processMedia(event)">
-            <input type="url" id="mediaLink" name="mediaLink" placeholder="Paste YouTube, Instagram, or Twitter link here" required />
-            <button type="submit">Submit Link</button>
-        </form>
-
-       
-        <div id="mediaDisplay"></div>
-
-      
-        <div class="comment-section">
-            <h2>Leave a Comment</h2>
-            <form id="commentForm" onsubmit="processComment(event)">
-                <textarea id="commentText" name="commentText" rows="4" placeholder="Enter your comment here" required></textarea>
-                <button type="submit">Submit Comment</button>
-            </form>
-            <div id="commentResult"></div>
-        </div>
+    
+    <div id="commentSection">
+        <h3>💬 Leave a Comment</h3>
+        <textarea id="commentInput" placeholder="Type your comment here..."></textarea>
+        <button onclick="analyzeSentiment()">Analyze Comment</button>
+        <p id="resultMessage"></p>
     </div>
 
-   
     <script>
-        // Toggle sidebar visibility
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("active");
-        }
+        function fetchVideoData() {
+            const url = document.getElementById("urlInput").value.trim();
+            if (!url) return;
 
-        // Process the media link submission
-        function processMedia(event) {
-            event.preventDefault();
-            const mediaLink = document.getElementById("mediaLink").value;
-            const mediaDisplay = document.getElementById("mediaDisplay");
-            mediaDisplay.innerHTML = "";
+            let embedUrl = "";
 
-            if (mediaLink.includes("youtube.com") || mediaLink.includes("youtu.be")) {
-                // Extract YouTube video ID from URL
-                let videoId = "";
-                if (mediaLink.includes("youtu.be/")) {
-                    videoId = mediaLink.split("youtu.be/")[1];
-                } else if (mediaLink.includes("v=")) {
-                    videoId = mediaLink.split("v=")[1];
-                    const ampersandPosition = videoId.indexOf("&");
-                    if (ampersandPosition !== -1) {
-                        videoId = videoId.substring(0, ampersandPosition);
-                    }
-                }
-                mediaDisplay.innerHTML = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
-            } else if (mediaLink.includes("instagram.com")) {
-                mediaDisplay.innerHTML = `<blockquote class="instagram-media" data-instgrm-permalink="${mediaLink}" data-instgrm-version="12"></blockquote>`;
-                const script = document.createElement("script");
-                script.src = "https://www.instagram.com/embed.js";
-                document.body.appendChild(script);
-            } else if (mediaLink.includes("twitter.com")) {
-                mediaDisplay.innerHTML = `<blockquote class="twitter-tweet"><a href="${mediaLink}"></a></blockquote>`;
-                const script = document.createElement("script");
-                script.src = "https://platform.twitter.com/widgets.js";
-                document.body.appendChild(script);
-            } else {
-                mediaDisplay.innerHTML = "<p>Unsupported media link. Please provide a valid YouTube, Instagram, or Twitter link.</p>";
+            
+            if (url.includes("youtube.com") || url.includes("youtu.be")) {
+                const videoId = url.split("v=")[1]?.split("&")[0] || url.split("youtu.be/")[1];
+                embedUrl = `https://www.youtube.com/embed/${videoId}`;
+            } 
+            
+            else if (url.includes("uml.edu")) {
+                embedUrl = url; 
+            }
+
+            if (embedUrl) {
+                document.getElementById("videoEmbed").src = embedUrl;
+                document.getElementById("videoContainer").style.display = "block"; // Show video
+                document.getElementById("commentSection").style.display = "block"; // Show comments
             }
         }
 
-        
-        function processComment(event) {
-            event.preventDefault();
-            const comment = document.getElementById("commentText").value.toLowerCase();
-            const resultDiv = document.getElementById("commentResult");
-            resultDiv.innerHTML = "";
+        function analyzeSentiment() {
+            const comment = document.getElementById("commentInput").value.toLowerCase();
+            let resultMessage = "Neutral";
+            let resultClass = "neutral";
 
-            
-            const positiveWords = ["good", "great", "awesome", "fantastic", "excellent"];
-            const negativeWords = ["bad", "terrible", "worst", "awful", "poor"];
-
-            let sentiment = "Neutral";
-            let isPositive = positiveWords.some(word => comment.includes(word));
-            let isNegative = negativeWords.some(word => comment.includes(word));
-
-            if (isPositive && !isNegative) {
-                sentiment = "Positive";
-            } else if (isNegative && !isPositive) {
-                sentiment = "Negative";
+            if (comment.includes("good") || comment.includes("great") || comment.includes("excellent")) {
+                resultMessage = "Positive 😊";
+                resultClass = "positive";
+            } else if (comment.includes("bad") || comment.includes("terrible") || comment.includes("poor")) {
+                resultMessage = "Negative 😞";
+                resultClass = "negative";
             }
 
-            
-            if (sentiment === "Positive") {
-                resultDiv.innerHTML = `<p><strong>Positive Comment:</strong> ${comment}</p>`;
-            } else if (sentiment === "Negative") {
-                resultDiv.innerHTML = `<p><strong>Negative Comment:</strong> Please consider changing your comment.</p>`;
-            } else {
-                resultDiv.innerHTML = `<p><strong>Neutral Comment:</strong> ${comment}</p>`;
-            }
+            const resultElement = document.getElementById("resultMessage");
+            resultElement.innerText = `Sentiment: ${resultMessage}`;
+            resultElement.className = resultClass;
         }
     </script>
 </body>
-
 </html>
