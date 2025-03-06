@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sentiment Analysis of Social Media</title>
-    <!-- Font Awesome for social media icons -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-    <!-- Sidebar with social media icons -->
+   
     <div class="sidebar" id="sidebar">
         <a href="javascript:void(0)" class="closebtn" onclick="toggleSidebar()">&times;</a>
         <a href="https://www.youtube.com" target="_blank"><i class="fa fa-youtube-play"></i></a>
@@ -19,23 +19,23 @@
         <a href="https://www.twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
     </div>
 
-    <!-- Main content area -->
+   
     <div class="content">
-        <!-- Hamburger Menu Icon -->
+        
         <span class="hamburger" onclick="toggleSidebar()">&#9776;</span>
-        <!-- Centered Title -->
+        
         <h1>Sentiment Analysis of Social Media</h1>
 
-        <!-- Link Input Form -->
+      
         <form id="linkForm" onsubmit="processMedia(event)">
             <input type="url" id="mediaLink" name="mediaLink" placeholder="Paste YouTube, Instagram, or Twitter link here" required />
             <button type="submit">Submit Link</button>
         </form>
 
-        <!-- Media Display Area -->
+       
         <div id="mediaDisplay"></div>
 
-        <!-- Comment Box Section -->
+      
         <div class="comment-section">
             <h2>Leave a Comment</h2>
             <form id="commentForm" onsubmit="processComment(event)">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <!-- Inline JavaScript -->
+   
     <script>
         // Toggle sidebar visibility
         function toggleSidebar() {
@@ -88,14 +88,14 @@
             }
         }
 
-        // Process the comment submission with a basic sentiment analysis
+        
         function processComment(event) {
             event.preventDefault();
             const comment = document.getElementById("commentText").value.toLowerCase();
             const resultDiv = document.getElementById("commentResult");
             resultDiv.innerHTML = "";
 
-            // Basic keyword-based sentiment analysis
+            
             const positiveWords = ["good", "great", "awesome", "fantastic", "excellent"];
             const negativeWords = ["bad", "terrible", "worst", "awful", "poor"];
 
@@ -109,7 +109,7 @@
                 sentiment = "Negative";
             }
 
-            // Display results according to sentiment
+            
             if (sentiment === "Positive") {
                 resultDiv.innerHTML = `<p><strong>Positive Comment:</strong> ${comment}</p>`;
             } else if (sentiment === "Negative") {
